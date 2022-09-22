@@ -1,0 +1,22 @@
+mode: local
+service_name: "storage-s3"
+port: ":8080"
+prefix: "/storage/v1.0.0"
+jaeger:
+  endpoint: "http://localhost:14268/api/traces"
+  active: false
+  path_ignore_logger:
+    - "/storage/v1.0.0/upload"
+    - "/storage/v1.0.0/upload-to-s3"
+postgresql:
+  host: localhost
+  port: '5432'
+  user: admin
+  db_name: db_test
+  ssl_mode: disable
+  password: trongnv
+  max_life_time: 300 # second
+  auto_migrate: true
+s3:
+  host: localhost
+  bucket: file
