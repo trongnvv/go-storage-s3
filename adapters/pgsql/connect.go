@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func DatabaseConnect(config *configs.Config) *gorm.DB {
+func Connect(config *configs.Config) *gorm.DB {
 	cf := config.Postgresql
 	dsn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=%s password=%s", cf.Host,
 		cf.Port, cf.User, cf.DbName, cf.SslMode, cf.Password)

@@ -6,12 +6,13 @@ import (
 )
 
 type Config struct {
+	Mode        string      `yaml:"mode"`
 	Port        string      `yaml:"port"`
 	Prefix      string      `json:"prefix"`
 	ServiceName string      `yaml:"service_name"`
 	Jaeger      *Jaeger     `yaml:"jaeger"`
-	Mode        string      `yaml:"mode"`
 	Postgresql  *Postgresql `yaml:"postgresql"`
+	S3          *S3         `yaml:"s3"`
 }
 
 type Jaeger struct {
@@ -29,6 +30,15 @@ type Postgresql struct {
 	Password    string `yaml:"password"`
 	MaxLifeTime int64  `yaml:"max_life_time"`
 	AutoMigrate bool   `yaml:"auto_migrate"`
+}
+
+type S3 struct {
+	Endpoint  string `yaml:"endpoint,omitempty"`
+	Bucket    string `yaml:"bucket"`
+	AccessKey string `yaml:"access_key"`
+	SecretKey string `yaml:"secret_key"`
+	Token     string `yaml:"token,omitempty"`
+	Region    string `yaml:"region"`
 }
 
 var config *Config

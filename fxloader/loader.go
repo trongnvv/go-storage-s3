@@ -2,6 +2,9 @@ package fxloader
 
 import (
 	"go-storage-s3/adapters/pgsql"
+	dbRepo "go-storage-s3/adapters/pgsql/repositories"
+	"go-storage-s3/adapters/s3"
+	s3Repo "go-storage-s3/adapters/s3/repositories"
 	"go-storage-s3/apis/controllers"
 	"go-storage-s3/apis/middlewares"
 	"go-storage-s3/apis/routers"
@@ -34,6 +37,9 @@ func loadUseCase() []fx.Option {
 
 func loadAdapter() []fx.Option {
 	return []fx.Option{
-		fx.Provide(pgsql.DatabaseConnect),
+		fx.Provide(s3.Connect),
+		fx.Provide(pgsql.Connect),
+		fx.Provide(dbRepo.NewFileRepository),
+		fx.Provide(s3Repo.NewFileRepository),
 	}
 }

@@ -11,7 +11,7 @@ type FileRepository struct {
 	db *gorm.DB
 }
 
-func NewFileRepository(db *gorm.DB) ports.FileRepository {
+func NewFileRepository(db *gorm.DB) ports.FileDatabaseRepository {
 	return &FileRepository{db}
 }
 

@@ -18,5 +18,9 @@ postgresql:
   max_life_time: 300 # second
   auto_migrate: true
 s3:
-  host: localhost
+  endpoint: 'http://localhost:9000'
+  access_key: 'trongnv' # id
+  secret_key: 'dev@1234'
+  token: ''
   bucket: file
+  region: 'none'
