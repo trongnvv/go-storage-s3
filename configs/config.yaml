@@ -7,7 +7,7 @@ jaeger:
   active: false
   path_ignore_logger:
     - "/storage/v1.0.0/upload"
-    - "/storage/v1.0.0/upload-to-s3"
+    - "/storage/v1.0.0/read-insert-db"
 postgresql:
   host: localhost
   port: '5432'
