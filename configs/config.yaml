@@ -19,8 +19,8 @@ postgresql:
   auto_migrate: true
 s3:
   endpoint: 'http://localhost:9000'
-  access_key: 'trongnv' # id
-  secret_key: 'dev@1234'
+  access_key: '0xV5gNfjrKWKwHCL' # 'trongnv' # id
+  secret_key: 'tEhbsHoo2BfxGMADDh8AyfLnbCY025Jh' # 'dev@1234'
   token: ''
-  bucket: file
-  region: 'none'
+  bucket: abcd
+  region: us-west-2

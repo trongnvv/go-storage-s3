@@ -2,40 +2,38 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-storage-s3/core/usecases"
 	"go-storage-s3/entities"
 	"net/http"
 )
 
 type FileController struct {
 	*baseController
+	fileUseCase *usecases.FileUseCase
 }
 
 func NewFileController(
 	base *baseController,
+	fileUseCase *usecases.FileUseCase,
 ) *FileController {
 	return &FileController{
 		baseController: base,
+		fileUseCase:    fileUseCase,
 	}
 }
 
 func (b *FileController) GetPresignedUrl(c *gin.Context) {
-	//var getListBankReq requests.GetListBankRequest
-	//if err := c.ShouldBindQuery(&getListBankReq); err != nil {
-	//	log.Warnf("bind query err, err:[%s]", err)
-	//	b.DefaultBadRequest(c)
-	//	return
-	//}
-	//if err := b.validateRequest(getListBankReq); err != nil {
-	//	b.BadRequest(c, err.Error())
-	//	return
-	//}
-	//data, customErr := b.getListBankUseCase.GetBankInfos(c.Request.Context())
-	//if customErr != nil {
-	//	b.ErrorData(c, customErr)
-	//	return
-	//}
-
-	c.JSON(http.StatusOK, nil)
+	url, err := b.fileUseCase.GetPresignedUrl(c, "46082f6c1f7fdf21866e.jpg")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, b.NewResponse(err.Error(), nil))
+		return
+	}
+	c.JSON(http.StatusOK, b.NewResponse(
+		"Success",
+		entities.ResponseFile{
+			Name: url,
+		},
+	))
 }
 
 func (b *FileController) Upload(c *gin.Context) {

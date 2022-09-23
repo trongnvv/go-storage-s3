@@ -21,11 +21,11 @@ func NewFileUseCase(
 }
 
 func (u *FileUseCase) GetPresignedUrl(ctx context.Context, path string) (string, error) {
-	return "", nil
-	//res, err := u.fileS3RepositoryPort.GetPresignedUrl(ctx, path)
-	//if err != nil {
-	//	return err
-	//}
+	res, err := u.fileS3RepositoryPort.GetPresignedUrl(ctx, path)
+	if err != nil {
+		return "", err
+	}
+	return res, nil
 	//u.fileDatabaseRepository.Save()
 	//return ""
 }
