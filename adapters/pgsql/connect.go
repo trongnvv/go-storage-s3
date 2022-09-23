@@ -29,7 +29,7 @@ func Connect(config *configs.Config) *gorm.DB {
 	}
 	psql.SetConnMaxLifetime(time.Duration(cf.MaxLifeTime) * time.Second)
 	if cf.AutoMigrate {
-		if err = db.AutoMigrate(&models.FileModel{}); err != nil {
+		if err = db.AutoMigrate(&models.FileModel{}, &models.DataCsvModel{}); err != nil {
 			log.Fatal(err, "auto migrate fail")
 			return nil
 		}

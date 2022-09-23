@@ -32,6 +32,7 @@ func loadApis() []fx.Option {
 func loadUseCase() []fx.Option {
 	return []fx.Option{
 		fx.Provide(usecases.NewFileUseCase),
+		fx.Provide(usecases.NewReadFileCSVHandleUseCase),
 	}
 }
 
@@ -40,6 +41,7 @@ func loadAdapter() []fx.Option {
 		fx.Provide(s3.Connect),
 		fx.Provide(pgsql.Connect),
 		fx.Provide(dbRepo.NewFileRepository),
+		fx.Provide(dbRepo.NewFileCsvRepository),
 		fx.Provide(s3Repo.NewFileRepository),
 	}
 }
