@@ -3,11 +3,15 @@ package repositories
 import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"go-storage-s3/configs"
 	"go-storage-s3/core/ports"
 	"golang.org/x/net/context"
 	"log"
+	"os"
 	"time"
 )
 
@@ -42,7 +46,6 @@ func checkBucketExisted(svc *s3.S3, bucketCheck string) bool {
 }
 
 func (u FileRepository) GetPresignedUrl(_ context.Context, path string) (string, error) {
-	u.test()
 	input := &s3.PutObjectInput{
 		Bucket: aws.String(u.bucket),
 		Key:    aws.String(path),
@@ -52,22 +55,30 @@ func (u FileRepository) GetPresignedUrl(_ context.Context, path string) (string,
 	return request.Presign(u.presignedExpired)
 }
 
-func (u *FileRepository) test() {
-	resp, err := u.svc.ListObjectsV2(&s3.ListObjectsV2Input{Bucket: aws.String(u.bucket)})
+func (u *FileRepository) Upload() {
+	cf := configs.Get()
+	sess, err := session.NewSession(&aws.Config{
+		Credentials: credentials.NewStaticCredentials(cf.S3.AccessKey, cf.S3.SecretKey, cf.S3.Token),
+		Endpoint:    aws.String(cf.S3.Endpoint),
+		Region:      aws.String(cf.S3.Region)},
+	)
+	uploader := s3manager.NewUploader(sess)
+
+	f, err := os.Open("upload/a.pdf")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(resp)
-	for _, item := range resp.Contents {
-		fmt.Println("Name:         ", *item.Key)
-		fmt.Println("Last modified:", *item.LastModified)
-		fmt.Println("Size:         ", *item.Size)
-		fmt.Println("Storage class:", *item.StorageClass)
-		fmt.Println("")
-	}
 
-	fmt.Println("Found", len(resp.Contents), "items in bucket", u.bucket)
-	fmt.Println("")
+	// Upload the file to S3.
+	result, err := uploader.Upload(&s3manager.UploadInput{
+		Bucket: aws.String(u.bucket),
+		Key:    aws.String(u.bucket + "/a.pdf"),
+		Body:   f,
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(result)
 
 }

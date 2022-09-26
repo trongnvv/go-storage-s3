@@ -10,24 +10,31 @@ import (
 
 type FileController struct {
 	*baseController
-	fileUseCase              *usecases.FileUseCase
+	fileS3UseCase            *usecases.FileS3UseCase
 	readFileCSVHandleUseCase *usecases.ReadFileCSVHandleUseCase
 }
 
 func NewFileController(
 	base *baseController,
-	fileUseCase *usecases.FileUseCase,
+	fileS3UseCase *usecases.FileS3UseCase,
 	readFileCSVHandleUseCase *usecases.ReadFileCSVHandleUseCase,
 ) *FileController {
 	return &FileController{
 		baseController:           base,
-		fileUseCase:              fileUseCase,
+		fileS3UseCase:            fileS3UseCase,
 		readFileCSVHandleUseCase: readFileCSVHandleUseCase,
 	}
 }
 
+func (b *FileController) S3Upload(c *gin.Context) {
+	b.fileS3UseCase.Upload()
+	c.JSON(http.StatusOK, b.NewResponse(
+		"Success",
+		nil,
+	))
+}
 func (b *FileController) GetPresignedUrl(c *gin.Context) {
-	url, err := b.fileUseCase.GetPresignedUrl(c, "46082f6c1f7fdf21866e.jpg")
+	url, err := b.fileS3UseCase.GetPresignedUrl(c, "46082f6c1f7fdf21866e.jpg")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, b.NewResponse(err.Error(), nil))
 		return

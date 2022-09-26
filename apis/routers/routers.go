@@ -35,8 +35,8 @@ func NewApiRouter(
 	r.Use(mid.Authenticate)
 	{
 		r.GET("/presigned_url", fileCtrl.GetPresignedUrl)
-
 		r.POST("/upload", fileCtrl.Upload)
+		r.POST("/upload-s3", fileCtrl.S3Upload)
 		r.POST("/read-insert-db", fileCtrl.ReadAndInsertDb)
 	}
 	return &ApiRouter{

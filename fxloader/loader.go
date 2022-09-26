@@ -31,7 +31,7 @@ func loadApis() []fx.Option {
 
 func loadUseCase() []fx.Option {
 	return []fx.Option{
-		fx.Provide(usecases.NewFileUseCase),
+		fx.Provide(usecases.NewFileS3UseCase),
 		fx.Provide(usecases.NewReadFileCSVHandleUseCase),
 	}
 }
